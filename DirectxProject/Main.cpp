@@ -1,7 +1,10 @@
 #include <Windows.h>
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-	const auto pClassName = "Prova";
+	
+	/* Creazione della windows class*/
+
+	const auto pClassName = "Prova";  // Nome della classe
 	WNDCLASSEX wc = { 0 };
 	
 	wc.cbSize = sizeof(wc);
@@ -19,7 +22,24 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	RegisterClassEx(&wc);
 
+	const auto pWindowName = "Prima finestra";
+
+	/* Creazione della finestra*/
+
+	HWND hWnd = CreateWindowExA(
+		0,
+		pClassName,
+		pWindowName,
+		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+		200, 200, 640, 480,
+		nullptr,
+		nullptr,
+		hInstance,
+		nullptr
+	);
 
 
+	ShowWindow(hWnd, SW_SHOW);
+	while (true);
 	return 0;
 }
