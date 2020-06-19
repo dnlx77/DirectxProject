@@ -46,19 +46,13 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	/* Gestione dei messaggi*/
 	
-	BOOL bRet;
-
-	while (bRet = GetMessage(&msg, nullptr, 0, 0) >= 0) {
-		
-		if (bRet == 0)
-			return WPARAM(msg.wParam);
-		else {
+	while (GetMessage(&msg, nullptr, 0, 0) > 0) {
 			TranslateMessage(&msg);
 			DispatchMessageA(&msg);
-		}
 	}
+	return WPARAM(msg.wParam);
 
-	return 0;
+	//return 0;
 
 }
 
@@ -66,12 +60,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 	switch (msg) {
 		case WM_CLOSE:
-			PostQuitMessage(1);
+			PostQuitMessage(25);
 			break;
-
-		case WM_QUIT:
-			return WPARAM(wParam);
+		default:
+			return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
-
-	return DefWindowProc (hWnd, msg, wParam, lParam);
 }
