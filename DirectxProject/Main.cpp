@@ -1,15 +1,17 @@
 #include <Windows.h>
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-	
+
+	LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 	/* Creazione della windows class*/
 
 	const auto pClassName = "Prova";  // Nome della classe
 	WNDCLASSEX wc = { 0 };
-	
+
 	wc.cbSize = sizeof(wc);
 	wc.style = CS_OWNDC;
-	wc.lpfnWndProc = DefWindowProc;
+	wc.lpfnWndProc = WndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
@@ -38,8 +40,38 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		nullptr
 	);
 
+	MSG msg;
 
 	ShowWindow(hWnd, SW_SHOW);
-	while (true);
+
+	/* Gestione dei messaggi*/
+	
+	BOOL bRet;
+
+	while (bRet = GetMessage(&msg, nullptr, 0, 0) >= 0) {
+		
+		if (bRet == 0)
+			return WPARAM(msg.wParam);
+		else {
+			TranslateMessage(&msg);
+			DispatchMessageA(&msg);
+		}
+	}
+
 	return 0;
+
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+
+	switch (msg) {
+		case WM_CLOSE:
+			PostQuitMessage(1);
+			break;
+
+		case WM_QUIT:
+			return WPARAM(wParam);
+	}
+
+	return DefWindowProc (hWnd, msg, wParam, lParam);
 }
